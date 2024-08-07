@@ -6,7 +6,7 @@ export const getAsignaturas = async (req, res) => {
       const asignaturas = await Asignatura.find({ facultad : req.user.id });
       res.json(asignaturas);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).json([error.message ]);
     }
   };
 
@@ -45,11 +45,11 @@ export const deleteAsignatura = async (req, res) => {
   try {
     const deletedAsignatura = await Asignatura.findByIdAndDelete(req.params.id);
     if (!deletedAsignatura)
-      return res.status(404).json({ message: "Asignatura not found" });
+      return res.status(404).json(["Asignatura not found" ]);
 
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json([error.message ]);
   }
 };
 
@@ -81,17 +81,17 @@ export const updateAsignatura = async (req, res) => {
     );
     return res.json(AsignaturaUpdated);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json([error.message ]);
   }
 };
 
 export const getAsignatura = async (req, res) => {
   try {
     const Asignatura = await Asignatura.findById(req.params.id);
-    if (!Asignatura) return res.status(404).json({ message: "Asignatura not found" });
+    if (!Asignatura) return res.status(404).json(["Asignatura not found"]);
     return res.json(Asignatura);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json([error.message ]);
   }
 };
 

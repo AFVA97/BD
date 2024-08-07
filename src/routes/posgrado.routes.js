@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getPosgrado,
   getPosgrados,
+  getPosgradoProfesor,
   createPosgrado,
   deletePosgrado,
   updatePosgrado
@@ -16,7 +17,9 @@ router.post("/posgrado/:tipo", auth, createPosgrado);
 
 router.get("/posgrado/:id", auth, getPosgrado);
 
-router.put("/posgrado/:id", auth, updatePosgrado);
+router.get("/posgrado/:idProfesor", auth, getPosgradoProfesor);
+
+router.put("/posgrado/:_id", auth, updatePosgrado);
 
 router.delete("/posgrado/:id", auth, deletePosgrado);
 

@@ -10,7 +10,15 @@ export const getPosgrados = async (req, res) => {
       return res.status(500).json({ message: error.message });
     }
   };
-
+  
+  export const getPosgradoProfesor = async (req, res) => {
+    try {
+      const Posgrados = await Posgrado.find({ profesor : req.params.idProfesor });
+      res.json(Posgrados);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  };
 
 export const createPosgrado=async(req,res)=>{
     try {

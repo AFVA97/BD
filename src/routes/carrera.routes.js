@@ -14,7 +14,7 @@ router.get("/carrera", auth, getCarreras);
 
 router.post("/carrera", auth, createCarrera);
 
-router.get("/carrera", auth, getCarrera);
+router.get("/carrera/:id", auth, getCarrera);
 
 router.put("/carrera/:id", auth, updateCarrera);
 

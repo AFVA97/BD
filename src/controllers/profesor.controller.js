@@ -3,10 +3,11 @@ import Profesor from "../models/profesor.model.js"
 
 export const getProfesor = async (req, res) => {
     try {
-        const Profesors = await Profesor.findById( req.params.id );
+        const Profesors = await Profesor.findById( req.params._id );
+        
         res.json(Profesors);
       } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json([error.message ]);
       }
 };
 
@@ -15,7 +16,7 @@ export const getProfesors = async (req, res) => {
         const Profesors = await Profesor.find();
         res.json(Profesors);
       } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json([error.message ]);
       }
 };
 
@@ -43,19 +44,19 @@ export const createProfesor =async(req,res)=>{
             const ProfesorSaved=await newProfesor.save()
             res.json({ProfesorSaved})
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json([error.message]);
     }
 }
 
 export const deleteProfesor = async (req, res) => {
     try {
-        const deletedProfesor = await Profesor.findByIdAndDelete(req.params.id);
+        const deletedProfesor = await Profesor.findByIdAndDelete(req.params._id);
         if (!deletedProfesor)
-          return res.status(404).json({ message: "Profesor not found" });
+          return res.status(404).json([ "Profesor not found" ]);
     
         return res.sendStatus(204);
       } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json([error.message]);
       }
 };
 
@@ -70,8 +71,10 @@ export const updateProfesor = async (req, res) => {
         plazaFija,
         funcionDireccion,
         pagoHoras } = req.body;
+        console.log(req.params._id);
+        
       const ProfesorUpdated = await Profesor.findOneAndUpdate(
-        { _id: req.params.id },
+        { _id: req.params._id },
         { idUniversidad,
             correo,
             ci,

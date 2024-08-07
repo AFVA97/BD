@@ -9,7 +9,14 @@ export const getTipoInvCient = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
   };
-
+  export const getTipoInvCientss = async (req, res) => {
+    try {
+      const tipoInvCient = await TipoInvCient.findById(req.params._id);
+      res.json(tipoInvCient);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+    };
 
 export const createTipoInvCient=async(req,res)=>{
   try {

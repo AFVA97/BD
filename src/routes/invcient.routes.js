@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   getInvCient,
+  getInvCientProfesor,
   getInvCients,
   createInvCient,
   deleteInvCient,
@@ -15,6 +16,8 @@ router.get("/invcient", auth, getInvCients);
 router.post("/invcient/:tipo", auth, createInvCient);
 
 router.get("/invcient/:id", auth, getInvCient);
+
+router.get("/invcient/:idProfesor", auth, getInvCientProfesor);
 
 router.put("/invcient/:id", auth, updateInvCient);
 

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   getExtUniv,
+  getExtUnivProfesor,
   getExtUnivs,
   createExtUniv,
   deleteExtUniv,
@@ -15,6 +16,8 @@ router.get("/extuniv", auth, getExtUnivs);
 router.post("/extuniv/:tipo", auth, createExtUniv);
 
 router.get("/extuniv/:id", auth, getExtUniv);
+
+router.get("/extuniv/:idProfesor", auth, getExtUnivProfesor);
 
 router.put("/extuniv/:id", auth, updateExtUniv);
 

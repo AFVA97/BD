@@ -6,10 +6,17 @@ export const getExtUnivs = async (req, res) => {
       const ExtUnivs = await ExtUniv.find({ profesor : req.user.id });
       res.json(ExtUnivs);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).json([error.message ]);
     }
   };
-
+  export const getExtUnivProfesor = async (req, res) => {
+    try {
+      const ExtUnivs = await ExtUniv.find({ profesor : req.params.idProfesor });
+      res.json(ExtUnivs);
+    } catch (error) {
+      return res.status(500).json([error.message ]);
+    }
+  };
 
 export const createExtUniv=async(req,res)=>{
     try {
@@ -29,7 +36,7 @@ export const createExtUniv=async(req,res)=>{
             const ExtUnivSaved=await newExtUniv.save()
             res.json({ExtUnivSaved})
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json([error.message ]);
     }
     
 }
@@ -38,11 +45,11 @@ export const deleteExtUniv = async (req, res) => {
   try {
     const deletedExtUniv = await ExtUniv.findByIdAndDelete(req.params.id);
     if (!deletedExtUniv)
-      return res.status(404).json({ message: "ExtUniv not found" });
+      return res.status(404).json(["ExtUniv not found" ]);
 
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json([error.message ]);
   }
 };
 
@@ -66,7 +73,7 @@ export const updateExtUniv = async (req, res) => {
     );
     return res.json(ExtUnivUpdated);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json([error.message ]);
   }
 };
 
@@ -76,7 +83,7 @@ export const getExtUniv = async (req, res) => {
     if (!ExtUniv) return res.status(404).json({ message: "ExtUniv not found" });
     return res.json(ExtUniv);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json([error.message ]);
   }
 };
 

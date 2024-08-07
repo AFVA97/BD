@@ -5,12 +5,7 @@ const profesorSchema= new mongoose.Schema({
         type:Number,
         required:true,
         unique:true
-    },
-    correo:{
-        type:String,
-        required:true,
-        unique:true
-    },
+    },    
     ci:{
         type:String,
         required:true,
@@ -27,11 +22,7 @@ const profesorSchema= new mongoose.Schema({
     graduado:{
         type:String,
         required:true
-    },
-    plazaFija:{
-        type:Boolean,
-        required:true,
-    },
+    },    
     funcionDireccion:{
         type:String,        
     },

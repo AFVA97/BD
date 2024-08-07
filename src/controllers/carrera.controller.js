@@ -3,10 +3,10 @@ import Carrera from "../models/carrera.model.js"
 
 export const getCarrera = async (req, res) => {
     try {
-        const carreras = await Carrera.find({ facultad : req.user.id });
+        const carreras = await Carrera.find({ facultad : req.params.id });
         res.json(carreras);
       } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json([ error.message ]);
       }
 };
 
@@ -15,7 +15,7 @@ export const getCarreras = async (req, res) => {
         const carreras = await Carrera.find();
         res.json(carreras);
       } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json([ error.message ]);
       }
 };
 
@@ -29,7 +29,7 @@ export const createCarrera =async(req,res)=>{
             const carreraSaved=await newCarrera.save()
             res.json({carreraSaved})
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json([error.message ]);
     }
 }
 
@@ -37,11 +37,11 @@ export const deleteCarrera = async (req, res) => {
     try {
         const deletedCarrera = await Carrera.findByIdAndDelete(req.params.id);
         if (!deletedCarrera)
-          return res.status(404).json({ message: "Carrera not found" });
+          return res.status(404).json(["Carrera not found" ]);
     
         return res.sendStatus(204);
       } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json([error.message ]);
       }
 };
 
@@ -55,7 +55,7 @@ export const updateCarrera = async (req, res) => {
         );
         return res.json(CarreraUpdated);
       } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json([error.message ]);
       }
 };
 

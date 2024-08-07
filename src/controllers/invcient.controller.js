@@ -92,5 +92,13 @@ export const getInvCient = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
+export const getInvCientProfesor = async (req, res) => {
+  try {
+    const InvCient = await InvCient.findById(req.params.idProfesor);
+    if (!InvCient) return res.status(404).json({ message: "InvCient not found" });
+    return res.json(InvCient);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 

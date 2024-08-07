@@ -45,3 +45,20 @@ export const deleteFacultad = async (req, res) => {
 };
 
 
+export const updateFacultad=async(req,res)=>{ 
+  try{
+    await InvCient.findOneAndUpdate(
+      { _id: req.params._id },
+       
+        {nombre,
+          abreviatura,
+      }=req.body,
+      { new: true }
+    );
+    return res.json(InvCientUpdated);
+  }
+
+ catch (error) {
+return res.status(500).json({ message: error.message });
+}
+};

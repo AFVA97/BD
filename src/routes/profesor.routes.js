@@ -14,10 +14,10 @@ router.get("/profesor", auth, getProfesors);
 
 router.post("/profesor", auth, createProfesor);
 
-router.get("/profesor/:id", auth, getProfesor);
+router.get("/profesor/:_id", auth, getProfesor);
 
-router.put("/profesor/:id", auth, updateProfesor);
+router.put("/profesor/:_id", auth, updateProfesor);
 
-router.delete("/profesor/:id", auth, deleteProfesor);
+router.delete("/profesor/:_id", auth, deleteProfesor);
 
 export default router;

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   getTipoExtUniv,
+  getTipoExtUnivss,
   createTipoExtUniv,
   deleteTipoExtUniv
 } from "../controllers/tipoExt.controller.js";
@@ -8,10 +9,12 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/tipoextuniv", auth, getTipoExtUniv);
+router.get("/tipoextuniv", getTipoExtUniv);
 
-router.post("/tipoextuniv", auth, createTipoExtUniv);
+router.get("/tipoextuniv/:_id", getTipoExtUnivss);
 
-router.delete("/tipoextuniv/:id", auth, deleteTipoExtUniv);
+router.post("/tipoextuniv", createTipoExtUniv);
+
+router.delete("/tipoextuniv/:id", deleteTipoExtUniv);
 
 export default router;

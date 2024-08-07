@@ -9,7 +9,14 @@ export const getTipoPosgrado = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
   };
-
+  export const getTipoPosgradoss = async (req, res) => {
+    try {
+      const tipoPosgrado = await TipoPosgrado.findById(req.params._id);
+      res.json(tipoPosgrado);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+    };
 
 export const createTipoPosgrado=async(req,res)=>{
   try {
