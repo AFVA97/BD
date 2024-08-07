@@ -71,7 +71,6 @@ export const updateProfesor = async (req, res) => {
         plazaFija,
         funcionDireccion,
         pagoHoras } = req.body;
-        console.log(req.params._id);
         
       const ProfesorUpdated = await Profesor.findOneAndUpdate(
         { _id: req.params._id },
@@ -88,7 +87,7 @@ export const updateProfesor = async (req, res) => {
       );
       return res.json(ProfesorUpdated);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).json([error.message ]);
     }
   };
 

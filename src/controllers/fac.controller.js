@@ -3,7 +3,8 @@ import Facultad from "../models/fac.model.js"
 
 export const getFacultad = async (req, res) => {
     try {
-        const Facultads = await Facultad.find({ nombre : req.params.id });
+      
+        const Facultads = await Facultad.findById( req.params.id );
         res.json(Facultads);
       } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -12,10 +13,10 @@ export const getFacultad = async (req, res) => {
 
 export const getFacultads = async (req, res) => {
     try {
-        const Facultads = await Facultad.find();
+        const Facultads = await Facultad.find();        
         res.json(Facultads);
       } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json([error.message ]);
       }
 };
 
@@ -47,18 +48,17 @@ export const deleteFacultad = async (req, res) => {
 
 export const updateFacultad=async(req,res)=>{ 
   try{
-    await InvCient.findOneAndUpdate(
-      { _id: req.params._id },
-       
-        {nombre,
-          abreviatura,
-      }=req.body,
+    const {nombre, abreviatura}=req.body;
+    
+    const FacultadUpdated=await Facultad.findOneAndUpdate(
+      { _id: req.params._id },       
+       {nombre,abreviatura} ,
       { new: true }
     );
-    return res.json(InvCientUpdated);
+    return res.json(FacultadUpdated);
   }
 
  catch (error) {
-return res.status(500).json({ message: error.message });
+  return res.status(500).json(error.message );
 }
 };
