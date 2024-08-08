@@ -31,7 +31,14 @@ export const register= async (req,res)=>{
     }
     
 }
-
+export const getusers=async(req,res)=>{
+    try {
+        const Users = await User.find();        
+        res.json(Users);
+      } catch (error) {
+        return res.status(500).json([error.message ]);
+      }
+}
 export const login=async(req,res)=>{
     const {username,password}=req.body
     
@@ -95,3 +102,26 @@ export const verifyToken=async(req,res)=>{
         return res.json(userFound)
     })
 }
+
+export const getuser = async (req, res) => {
+    try {
+      
+        const user = await User.findById( req.params.id );
+        res.json(user);
+      } catch (error) {
+        return res.status(500).json(error.message );
+      }
+};
+
+
+export const deleteuser = async (req, res) => {
+    try {
+        const deleteduser = await User.findByIdAndDelete(req.params.id);
+        if (!deleteduser)
+          return res.status(404).json(["user not found" ]);
+    
+        return res.sendStatus(204);
+      } catch (error) {
+        return res.status(500).json([ error.message ]);
+      }
+};
