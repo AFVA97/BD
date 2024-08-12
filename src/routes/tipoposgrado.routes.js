@@ -9,12 +9,12 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/tipoposgrado", auth, getTipoPosgrado);
+router.get("/tipoposgrado",getTipoPosgrado);
 
-router.get("/tipoposgrado/:_id", auth, getTipoPosgradoss);
+router.get("/tipoposgrado/:_id", getTipoPosgradoss);
 
-router.post("/tipoposgrado", auth,createTipoPosgrado);
+router.post("/tipoposgrado", createTipoPosgrado);
 
-router.delete("/tipoposgrado/:id", auth, deleteTipoPosgrado);
+router.delete("/tipoposgrado/:id", deleteTipoPosgrado);
 
 export default router;

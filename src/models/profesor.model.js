@@ -28,6 +28,24 @@ const profesorSchema= new mongoose.Schema({
     },
     pagoHoras:{
         type:Number,
+    },
+    trabajoec:{
+        type:Number
+    },
+    trabajoc:{
+        type:Number
+    },
+    trabajod:{
+        type:Number
+    },
+    tutoria:{
+        type:Number
+    },
+    examene:{
+        type:Number
+    },
+    trabajometo:{
+        type:Number
     }
 })
 

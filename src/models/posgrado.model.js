@@ -1,4 +1,5 @@
 import mongoose, { mongo } from "mongoose";
+import { number } from "zod";
 
 const posgradoSchema= new mongoose.Schema({
     profesor:{
@@ -26,10 +27,13 @@ const posgradoSchema= new mongoose.Schema({
         type:String,
     },
     modalidad:{
-        type:mongoose.Schema.ObjectId,
-        required:true,
-        ref:'TipoPosgrado'
+        type:String,
+        required:true,        
     },
+    horas:{
+        type:Number,
+        required:true
+    }
     
 })
 

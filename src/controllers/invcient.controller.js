@@ -21,7 +21,7 @@ export const createInvCient=async(req,res)=>{
         issbnn,
         autores,
         link,
-        tipo=req.params.tipo}=req.body;
+        tipo}=req.body;
             const newInvCient=new InvCient({profesor,
                 titulo,
                 fecha,
@@ -43,7 +43,7 @@ export const deleteInvCient = async (req, res) => {
   try {
     const deletedInvCient = await InvCient.findByIdAndDelete(req.params.id);
     if (!deletedInvCient)
-      return res.status(404).json({ message: "InvCient not found" });
+      return res.status(404).json(["InvCient not found" ]);
 
     return res.sendStatus(204);
   } catch (error) {
@@ -53,28 +53,24 @@ export const deleteInvCient = async (req, res) => {
 
 export const updateInvCient = async (req, res) => {
   try {
-    const { nombre,
-      carrera,
-      facultad,
-      anno,
-      semestre,
-      tipocurso,
-      cantgrupos,
-      horas,
-      profesor,
-      notas } = req.body;
+    const { titulo,
+      fecha,
+      descripcion,
+      alcance,
+      issbnn,
+      autores,
+      link,
+      tipo } = req.body;
     const InvCientUpdated = await InvCient.findOneAndUpdate(
       { _id: req.params.id },
-      { nombre,
-        carrera,
-        facultad,
-        anno,
-        semestre,
-        tipocurso,
-        cantgrupos,
-        horas,
-        profesor,
-        notas },
+      { titulo,
+        fecha,
+        descripcion,
+        alcance,
+        issbnn,
+        autores,
+        link,
+        tipo },
       { new: true }
     );
     return res.json(InvCientUpdated);
@@ -86,7 +82,7 @@ export const updateInvCient = async (req, res) => {
 export const getInvCient = async (req, res) => {
   try {
     const InvCient = await InvCient.findById(req.params.id);
-    if (!InvCient) return res.status(404).json({ message: "InvCient not found" });
+    if (!InvCient) return res.status(404).json([ "InvCient not found" ]);
     return res.json(InvCient);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -94,9 +90,9 @@ export const getInvCient = async (req, res) => {
 };
 export const getInvCientProfesor = async (req, res) => {
   try {
-    const InvCient = await InvCient.findById(req.params.idProfesor);
-    if (!InvCient) return res.status(404).json({ message: "InvCient not found" });
-    return res.json(InvCient);
+    const invCient = await InvCient.find({profesor:req.params.idProfesor});
+    if (!invCient) return res.status(404).json(["InvCient not found" ]);
+    return res.json(invCient);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

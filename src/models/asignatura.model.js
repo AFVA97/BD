@@ -36,8 +36,12 @@ const asignaturaSchema=new mongoose.Schema({
         required:true,
     },
     profesor:{
-        type:String,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'Profesor'
+    },
+    exafinal:{
+        type:Boolean,
+        required:true
     },
     notas:{
         type:String,

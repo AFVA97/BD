@@ -1,6 +1,8 @@
 import { Router } from "express";
 import {
   getAsignatura,
+  getAsignaturaProf,
+  getAsignaturaFac,
   getAsignaturas,
   createAsignatura,
   deleteAsignatura,
@@ -15,6 +17,10 @@ router.get("/asignatura", auth, getAsignaturas);
 router.post("/asignatura/:carrera", auth, createAsignatura);
 
 router.get("/asignatura/:id", auth, getAsignatura);
+
+router.get("/asignatura/prof/:id", auth, getAsignaturaProf);
+
+router.get("/asignatura/fac/:id", auth, getAsignaturaFac);
 
 router.put("/asignatura/:id", auth, updateAsignatura);
 

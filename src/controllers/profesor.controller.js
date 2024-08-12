@@ -31,6 +31,12 @@ export const createProfesor =async(req,res)=>{
         plazaFija,
         funcionDireccion,
         pagoHoras,
+        trabajoec,
+        trabajoc,
+        trabajod,
+        tutoria,
+        examene,
+        trabajometo
         }=req.body;
             const newProfesor=new Profesor({idUniversidad,
                 correo,
@@ -40,7 +46,13 @@ export const createProfesor =async(req,res)=>{
                 graduado,
                 plazaFija,
                 funcionDireccion,
-                pagoHoras,});
+                pagoHoras,
+                trabajoec,
+                trabajoc,
+                trabajod,
+                tutoria,
+                examene,
+                trabajometo});
             const ProfesorSaved=await newProfesor.save()
             res.json({ProfesorSaved})
     } catch (error) {
@@ -70,7 +82,13 @@ export const updateProfesor = async (req, res) => {
         graduado,
         plazaFija,
         funcionDireccion,
-        pagoHoras } = req.body;
+        pagoHoras ,
+        trabajoec,
+        trabajoc,
+        trabajod,
+        tutoria,
+        examene,
+        trabajometo} = req.body;
         
       const ProfesorUpdated = await Profesor.findOneAndUpdate(
         { _id: req.params._id },
@@ -82,7 +100,13 @@ export const updateProfesor = async (req, res) => {
             graduado,
             plazaFija,
             funcionDireccion,
-            pagoHoras },
+            pagoHoras ,
+            trabajoec,
+            trabajoc,
+            trabajod,
+            tutoria,
+            examene,
+            trabajometo},
         { new: true }
       );
       return res.json(ProfesorUpdated);

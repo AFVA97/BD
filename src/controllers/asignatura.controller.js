@@ -94,4 +94,22 @@ export const getAsignatura = async (req, res) => {
     return res.status(500).json([error.message ]);
   }
 };
+export const getAsignaturaProf = async (req, res) => {
+  try {
+    const asignatura = await Asignatura.find({profeosr:req.params.id});
+    if (!asignatura) return res.status(404).json(["Asignatura not found"]);
+    return res.json(asignatura);
+  } catch (error) {
+    return res.status(500).json([error.message ]);
+  }
+};
+export const getAsignaturaFac = async (req, res) => {
+  try {
+    const asignatura = await Asignatura.find({facultad:req.params.id});
+    if (!asignatura) return res.status(404).json(["Asignatura not found"]);
+    return res.json(asignatura);
+  } catch (error) {
+    return res.status(500).json([error.message ]);
+  }
+};
 

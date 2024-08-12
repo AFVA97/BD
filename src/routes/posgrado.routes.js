@@ -17,7 +17,7 @@ router.post("/posgrado/:tipo", auth, createPosgrado);
 
 router.get("/posgrado/:id", auth, getPosgrado);
 
-router.get("/posgrado/:idProfesor", auth, getPosgradoProfesor);
+router.get("/posgrado/prof/:idProfesor", auth, getPosgradoProfesor);
 
 router.put("/posgrado/:_id", auth, updatePosgrado);
 

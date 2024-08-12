@@ -18,9 +18,7 @@ export const register= async (req,res)=>{
         
         const userSaved=await newUser.save()
         
-        const tokenusername=await createAccessToken({username:userSaved.username})
         
-        res.cookie("tokenusername",tokenusername)
                 
         res.json({
             username:userSaved.username            
@@ -105,18 +103,45 @@ export const verifyToken=async(req,res)=>{
 
 export const getuser = async (req, res) => {
     try {
+      console.log(req.params._id);
       
-        const user = await User.findById( req.params.id );
+        const user = await User.findById( req.params._id );
+        
         res.json(user);
       } catch (error) {
         return res.status(500).json(error.message );
       }
 };
 
+export const getuserCI = async (req, res) => {
+    try {
+      console.log(req.params._id);
+      
+        const user = await User.findById( {ciuser:req.params._id} );
+        
+        res.json(user);
+      } catch (error) {
+        return res.status(500).json(error.message );
+      }
+};
+export const getuserFAC = async (req, res) => {
+    try {
+      console.log(req.params._id);
+      
+        const user = await User.findById( {facuser:req.params._id} );
+        
+        res.json(user);
+      } catch (error) {
+        return res.status(500).json(error.message );
+      }
+};
 
 export const deleteuser = async (req, res) => {
+    
+        
     try {
-        const deleteduser = await User.findByIdAndDelete(req.params.id);
+        
+        const deleteduser = await User.findByIdAndDelete(req.params._id);
         if (!deleteduser)
           return res.status(404).json(["user not found" ]);
     

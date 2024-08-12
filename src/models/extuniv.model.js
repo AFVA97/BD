@@ -17,9 +17,9 @@ const extunivSchema= new mongoose.Schema({
         ref:'Profesor'
     },
     tipo:{
-        type:mongoose.Schema.ObjectId,
+        type:String,
         required:true,
-        ref:'TipoExt'
+        
     },
     titulo:{
         type:String,

@@ -31,9 +31,9 @@ const invcientSchema= new mongoose.Schema({
         type:String,
     },
     tipo:{
-        type:mongoose.Schema.ObjectId,
+        type:String,
         required:true,
-        ref:'TipoInv'
+        
     },
     
 })
