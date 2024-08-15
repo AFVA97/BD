@@ -72,7 +72,7 @@ export const logout=(req,res)=>{
 }
 
 export const profile= async (req,res)=>{
-    const userFound=await User.findOne(req.user.username)
+    const userFound=await User.findOne({username:req.user.username})
     if(!userFound)return res.status(400).json(["User Not Found"])
         return res.json({
             username:userFound.username,

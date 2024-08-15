@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 
 const extunivSchema= new mongoose.Schema({
-    nombre:{
-        type:String,
-        required:true,
-        
-    },
+    
     fecha:{
         type:Date,
         required:true,

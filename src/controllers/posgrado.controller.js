@@ -28,6 +28,7 @@ export const createPosgrado=async(req,res)=>{
             impartido,
             cantcuadros,
             ubicacion,
+            horas,
             modalidad=req.params.tipo}=req.body;
             const newPosgrado=new Posgrado({
                 profesor,
@@ -36,6 +37,7 @@ export const createPosgrado=async(req,res)=>{
                 impartido,
                 cantcuadros,
                 ubicacion,
+                horas,
                 modalidad});
             const PosgradoSaved=await newPosgrado.save()
             res.json({PosgradoSaved})

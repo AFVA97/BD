@@ -12,6 +12,7 @@ export const getExtUnivs = async (req, res) => {
   export const getExtUnivProfesor = async (req, res) => {
     try {
       const ExtUnivs = await ExtUniv.find({ profesor : req.params.idProfesor });
+      
       res.json(ExtUnivs);
     } catch (error) {
       return res.status(500).json([error.message ]);
@@ -20,15 +21,13 @@ export const getExtUnivs = async (req, res) => {
 
 export const createExtUniv=async(req,res)=>{
     try {
-        const {profesor=req.user.id,
-            nombre,
+        const {profesor,
             fecha,
             titulo,
             horas,
-            tipo=req.params.tipo}=req.body;
+            tipo}=req.body;
             const newExtUniv=new ExtUniv({
                 profesor,
-                nombre,
                 fecha,
                 titulo,
                 horas,
@@ -55,12 +54,14 @@ export const deleteExtUniv = async (req, res) => {
 
 export const updateExtUniv = async (req, res) => {
   try {
-    const { profesor,
+    const { profesor=req.user.id,
         nombre,
         fecha,
         titulo,
         horas,
         tipo } = req.body;
+        console.log(fecha);
+        
     const ExtUnivUpdated = await ExtUniv.findOneAndUpdate(
       { _id: req.params.id },
       { profesor,
@@ -79,9 +80,9 @@ export const updateExtUniv = async (req, res) => {
 
 export const getExtUniv = async (req, res) => {
   try {
-    const ExtUniv = await ExtUniv.findById(req.params.id);
-    if (!ExtUniv) return res.status(404).json({ message: "ExtUniv not found" });
-    return res.json(ExtUniv);
+    const extUniv = await ExtUniv.findById(req.params.id);
+    if (!extUniv) return res.status(404).json({ message: "ExtUniv not found" });
+    return res.json(extUniv);
   } catch (error) {
     return res.status(500).json([error.message ]);
   }

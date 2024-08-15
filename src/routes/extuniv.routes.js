@@ -13,7 +13,7 @@ const router = Router();
 
 router.get("/extuniv", auth, getExtUnivs);
 
-router.post("/extuniv/:tipo", auth, createExtUniv);
+router.post("/extuniv", auth, createExtUniv);
 
 router.get("/extuniv/:id", auth, getExtUniv);
 

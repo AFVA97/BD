@@ -13,7 +13,7 @@ const router = Router();
 
 router.get("/invcient",  getInvCients);
 
-router.post("/invcient/:tipo",  createInvCient);
+router.post("/invcient",  createInvCient);
 
 router.get("/invcient/:id",  getInvCient);
 

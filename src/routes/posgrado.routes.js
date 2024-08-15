@@ -13,7 +13,7 @@ const router = Router();
 
 router.get("/posgrado", auth, getPosgrados);
 
-router.post("/posgrado/:tipo", auth, createPosgrado);
+router.post("/posgrado", auth, createPosgrado);
 
 router.get("/posgrado/:id", auth, getPosgrado);
 
