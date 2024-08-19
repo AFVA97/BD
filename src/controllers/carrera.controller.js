@@ -3,11 +3,19 @@ import Carrera from "../models/carrera.model.js"
 
 export const getCarrera = async (req, res) => {
     try {
-        const carreras = await Carrera.find({ facultad : req.params.id });
+        const carreras = await Carrera.findById( req.params.id );
         res.json(carreras);
       } catch (error) {
         return res.status(500).json([ error.message ]);
       }
+};
+export const getCarreraProf = async (req, res) => {
+  try {
+      const carreras = await Carrera.find({facultad: req.params.id} );
+      res.json(carreras);
+    } catch (error) {
+      return res.status(500).json([ error.message ]);
+    }
 };
 
 export const getCarreras = async (req, res) => {

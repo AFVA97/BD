@@ -20,7 +20,7 @@ router.get("/asignatura/:id", auth, getAsignatura);
 
 router.get("/asignatura/prof/:id", auth, getAsignaturaProf);
 
-router.get("/asignatura/fac/:id", auth, getAsignaturaFac);
+router.get("/asignatura/fac/:_id", auth, getAsignaturaFac);
 
 router.put("/asignatura/:id", auth, updateAsignatura);
 

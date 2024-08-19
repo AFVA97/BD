@@ -105,7 +105,7 @@ export const getAsignaturaProf = async (req, res) => {
 };
 export const getAsignaturaFac = async (req, res) => {
   try {
-    const asignatura = await Asignatura.find({facultad:req.params.id});
+    const asignatura = await Asignatura.find({facultad:req.params._id});
     if (!asignatura) return res.status(404).json(["Asignatura not found"]);
     return res.json(asignatura);
   } catch (error) {
