@@ -14,7 +14,7 @@ const router = Router();
 
 router.get("/asignatura",  getAsignaturas);
 
-router.post("/asignatura/:carrera", auth, createAsignatura);
+router.post("/asignatura", auth, createAsignatura);
 
 router.get("/asignatura/:id", auth, getAsignatura);
 

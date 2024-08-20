@@ -14,15 +14,18 @@ export const getAsignaturas = async (req, res) => {
 export const createAsignatura=async(req,res)=>{
     try {
         const {nombre,
-            carrera=req.params.carrera,
-            facultad=req.user.id,
+            carrera,
+            facultad,
             anno,
             semestre,
             tipocurso,
             cantgrupos,
             horas,
             profesor,
+            exafinal,
             notas}=req.body;
+            console.log(req.body);
+            
             const newAsignatura=new Asignatura({nombre,
                 carrera,
                 facultad,
@@ -32,6 +35,7 @@ export const createAsignatura=async(req,res)=>{
                 cantgrupos,
                 horas,
                 profesor,
+                exafinal,
                 notas});
             const asignaturaSaved=await newAsignatura.save()
             res.json({asignaturaSaved})
@@ -64,12 +68,14 @@ export const updateAsignatura = async (req, res) => {
       cantgrupos,
       horas,
       profesor,
+      exafinal,
       notas } = req.body;
     const AsignaturaUpdated = await Asignatura.findOneAndUpdate(
       { _id: req.params.id },
       { nombre,
         carrera,
         facultad,
+        exafinal,
         anno,
         semestre,
         tipocurso,
