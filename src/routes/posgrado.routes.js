@@ -11,7 +11,7 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/posgrado", auth, getPosgrados);
+router.get("/posgrado", getPosgrados);
 
 router.post("/posgrado", auth, createPosgrado);
 

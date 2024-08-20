@@ -14,6 +14,7 @@ export const getProfesor = async (req, res) => {
 export const getProfesors = async (req, res) => {
     try {
         const Profesors = await Profesor.find();
+        
         res.json(Profesors);
       } catch (error) {
         return res.status(500).json([error.message ]);

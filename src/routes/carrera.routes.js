@@ -11,7 +11,7 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/carrera", auth, getCarreras);
+router.get("/carrera",  getCarreras);
 
 router.post("/carrera", auth, createCarrera);
 

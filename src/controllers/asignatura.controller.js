@@ -3,7 +3,7 @@ import Asignatura from "../models/asignatura.model.js"
 
 export const getAsignaturas = async (req, res) => {
     try {
-      const asignaturas = await Asignatura.find({ facultad : req.user.id });
+      const asignaturas = await Asignatura.find();
       res.json(asignaturas);
     } catch (error) {
       return res.status(500).json([error.message ]);

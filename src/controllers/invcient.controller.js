@@ -3,7 +3,7 @@ import InvCient from "../models/invcient.model.js"
 
 export const getInvCients = async (req, res) => {
     try {
-      const invCients = await InvCient.find({ profesor : req.user.id });
+      const invCients = await InvCient.find();
       res.json(invCients);
     } catch (error) {
       return res.status(500).json({ message: error.message });

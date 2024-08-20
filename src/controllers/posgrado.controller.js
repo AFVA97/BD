@@ -4,7 +4,7 @@ import Posgrado from "../models/posgrado.model.js"
 
 export const getPosgrados = async (req, res) => {
     try {
-      const Posgrados = await Posgrado.find({ profesor : req.user.id });
+      const Posgrados = await Posgrado.find();
       res.json(Posgrados);
     } catch (error) {
       return res.status(500).json({ message: error.message });

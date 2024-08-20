@@ -3,7 +3,7 @@ import ExtUniv from "../models/extuniv.model.js"
 
 export const getExtUnivs = async (req, res) => {
     try {
-      const ExtUnivs = await ExtUniv.find({ profesor : req.user.id });
+      const ExtUnivs = await ExtUniv.find();
       res.json(ExtUnivs);
     } catch (error) {
       return res.status(500).json([error.message ]);
