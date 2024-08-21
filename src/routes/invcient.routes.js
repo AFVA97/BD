@@ -11,16 +11,16 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/invcient",  getInvCients);
+router.get("/invcient", auth, getInvCients);
 
-router.post("/invcient",  createInvCient);
+router.post("/invcient", auth, createInvCient);
 
-router.get("/invcient/:id",  getInvCient);
+router.get("/invcient/:id", auth, getInvCient);
 
-router.get("/invcient/prof/:idProfesor", getInvCientProfesor);
+router.get("/invcient/prof/:idProfesor",auth, getInvCientProfesor);
 
-router.put("/invcient/:id",  updateInvCient);
+router.put("/invcient/:id", auth, updateInvCient);
 
-router.delete("/invcient/:id",  deleteInvCient);
+router.delete("/invcient/:id", auth, deleteInvCient);
 
 export default router;

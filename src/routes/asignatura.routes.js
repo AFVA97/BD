@@ -12,7 +12,7 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/asignatura",  getAsignaturas);
+router.get("/asignatura", auth, getAsignaturas);
 
 router.post("/asignatura", auth, createAsignatura);
 

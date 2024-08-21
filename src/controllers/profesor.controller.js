@@ -3,6 +3,8 @@ import Profesor from "../models/profesor.model.js"
 
 export const getProfesor = async (req, res) => {
     try {
+      console.log(req.params._id);
+      
         const Profesors = await Profesor.findById( req.params._id );
         
         res.json(Profesors);

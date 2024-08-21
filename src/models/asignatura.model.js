@@ -23,6 +23,14 @@ const asignaturaSchema=new mongoose.Schema({
         type:Boolean,
         required:true,
     },
+    frecuencia:{
+        type:Number,
+        required:true
+    },
+    tutoriaaa:{
+        type:Number,
+        required:true
+    },
     tipocurso:{
         type:String,
         required:true,

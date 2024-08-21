@@ -10,9 +10,6 @@ import nombreAsigRoutes from "./routes/nombreAsig.routes.js"
 import invcientRoutes from "./routes/invcient.routes.js"
 import posgradoRoutes from "./routes/posgrado.routes.js"
 import profesorRoutes from "./routes/profesor.routes.js"
-import tipoExtRoutes from "./routes/tipoExt.routes.js"
-import tipoinvcientRoutes from "./routes/tipoinvcient.routes.js"
-import tipoposgradoRoutes from "./routes/tipoposgrado.routes.js"
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -34,8 +31,5 @@ app.use("/api",invcientRoutes)
 app.use("/api",nombreAsigRoutes)
 app.use("/api",posgradoRoutes)
 app.use("/api",profesorRoutes)
-app.use("/api",tipoExtRoutes)
-app.use("/api",tipoinvcientRoutes)
-app.use("/api",tipoposgradoRoutes)
 
 export default app

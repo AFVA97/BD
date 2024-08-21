@@ -10,7 +10,7 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/profesor",  getProfesors);
+router.get("/profesor", auth, getProfesors);
 
 router.post("/profesor", auth, createProfesor);
 

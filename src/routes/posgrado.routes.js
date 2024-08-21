@@ -11,11 +11,11 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/posgrado", getPosgrados);
+router.get("/posgrado",auth, getPosgrados);
 
-router.post("/posgrado", auth, createPosgrado);
+router.post("/posgrado", auth, auth,createPosgrado);
 
-router.get("/posgrado/:id", auth, getPosgrado);
+router.get("/posgrado/:id", auth,auth, getPosgrado);
 
 router.get("/posgrado/prof/:idProfesor", auth, getPosgradoProfesor);
 

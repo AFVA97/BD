@@ -10,14 +10,14 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/nombreasignatura",  getNombreAsigs);
+router.get("/nombreasignatura", auth, getNombreAsigs);
 
-router.post("/nombreasignatura",  createNombreAsig);
+router.post("/nombreasignatura", auth, createNombreAsig);
 
-router.get("/nombreasignatura/:id",  getNombreAsig);
+router.get("/nombreasignatura/:id", auth, getNombreAsig);
 
-router.put("/nombreasignatura/:_id",updateNombreAsig);
+router.put("/nombreasignatura/:_id", auth, updateNombreAsig);
 
-router.delete("/nombreasignatura/:id",  deleteNombreAsig);
+router.delete("/nombreasignatura/:id", auth, deleteNombreAsig);
 
 export default router;

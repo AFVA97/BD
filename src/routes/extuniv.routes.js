@@ -11,7 +11,7 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/extuniv",  getExtUnivs);
+router.get("/extuniv",  auth,getExtUnivs);
 
 router.post("/extuniv", auth, createExtUniv);
 

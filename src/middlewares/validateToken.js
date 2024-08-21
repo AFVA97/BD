@@ -9,8 +9,8 @@ export const authRequired=(req,res,next)=>{
     jwt.verify(tokenusername,TOKEN_SECRET,(err, user)=>{
         if(err) return res.status(403).json({message:"Invalid Token"})
         
-        req.user=user;
-        next();
+    req.user=user;
+    next();
 
     })
 
