@@ -22,7 +22,7 @@ router.get("/asignatura/prof/:id", auth, getAsignaturaProf);
 
 router.get("/asignatura/fac/:_id", auth, getAsignaturaFac);
 
-router.put("/asignatura/:id", auth, updateAsignatura);
+router.put("/asignatura/:_id", auth, updateAsignatura);
 
 router.delete("/asignatura/:id", auth, deleteAsignatura);
 

@@ -77,7 +77,7 @@ export const updateAsignatura = async (req, res) => {
       exafinal,
       notas } = req.body;
     const AsignaturaUpdated = await Asignatura.findOneAndUpdate(
-      { _id: req.params.id },
+      { _id: req.params._id },
       { nombre,
         carrera,
         facultad,
@@ -95,15 +95,17 @@ export const updateAsignatura = async (req, res) => {
     );
     return res.json(AsignaturaUpdated);
   } catch (error) {
+    console.log(error);
+    
     return res.status(500).json([error.message ]);
   }
 };
 
 export const getAsignatura = async (req, res) => {
   try {
-    const Asignatura = await Asignatura.findById(req.params.id);
-    if (!Asignatura) return res.status(404).json(["Asignatura not found"]);
-    return res.json(Asignatura);
+    const asignatura = await Asignatura.findById(req.params.id);
+    if (!asignatura) return res.status(404).json(["Asignatura not found"]);
+    return res.json(asignatura);
   } catch (error) {
     return res.status(500).json([error.message ]);
   }
