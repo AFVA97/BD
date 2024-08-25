@@ -81,9 +81,9 @@ export const updateInvCient = async (req, res) => {
 
 export const getInvCient = async (req, res) => {
   try {
-    const InvCient = await InvCient.findById(req.params.id);
-    if (!InvCient) return res.status(404).json([ "InvCient not found" ]);
-    return res.json(InvCient);
+    const invCient = await InvCient.findById(req.params._id);
+    if (!invCient) return res.status(404).json([ "InvCient not found" ]);
+    return res.json(invCient);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

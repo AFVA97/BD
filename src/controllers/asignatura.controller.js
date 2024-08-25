@@ -103,7 +103,7 @@ export const updateAsignatura = async (req, res) => {
 
 export const getAsignatura = async (req, res) => {
   try {
-    const asignatura = await Asignatura.findById(req.params.id);
+    const asignatura = await Asignatura.findById(req.params.id).populate(['facultad','carrera']);
     if (!asignatura) return res.status(404).json(["Asignatura not found"]);
     return res.json(asignatura);
   } catch (error) {

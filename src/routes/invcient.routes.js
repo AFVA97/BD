@@ -15,7 +15,7 @@ router.get("/invcient", auth, getInvCients);
 
 router.post("/invcient", auth, createInvCient);
 
-router.get("/invcient/:id", auth, getInvCient);
+router.get("/invcient/:_id", auth, getInvCient);
 
 router.get("/invcient/prof/:idProfesor",auth, getInvCientProfesor);
 
