@@ -43,6 +43,14 @@ const asignaturaSchema=new mongoose.Schema({
         type:Number,
         required:true,
     },
+    comienzo:{
+        type:Date,
+        required:true,
+    },
+    finaliza:{
+        type:Date,
+        required:true,
+    },
     profesor:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Profesor'

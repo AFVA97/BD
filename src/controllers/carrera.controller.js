@@ -30,7 +30,7 @@ export const getCarreras = async (req, res) => {
 export const createCarrera =async(req,res)=>{
     try {
         const {nombre,
-            facultad=req.user.id,
+            facultad
         }=req.body;
             const newCarrera=new Carrera({nombre,
                 facultad});
