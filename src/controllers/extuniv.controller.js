@@ -4,7 +4,18 @@ import ExtUniv from "../models/extuniv.model.js"
 export const getExtUnivs = async (req, res) => {
     try {
       const ExtUnivs = await ExtUniv.find();
-      res.json(ExtUnivs);
+
+      const {globalData}=req.cookies
+      if(globalData==0){
+        res.json(ExtUnivs)
+        return
+      }
+      else{
+        const filtrado=ExtUnivs.filter((extension)=>((new Date(extension.fecha).getFullYear()==globalData&&parseInt(String((new Date(extension.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(extension.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(extension.fecha)).getMonth() + 1))<=7)))
+        res.json(filtrado);
+        return
+      }
+      //res.json(ExtUnivs);
     } catch (error) {
       return res.status(500).json([error.message ]);
     }

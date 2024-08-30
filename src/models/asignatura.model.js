@@ -29,7 +29,7 @@ const asignaturaSchema=new mongoose.Schema({
     },
     tutoriaaa:{
         type:Number,
-        required:true
+        
     },
     tipocurso:{
         type:String,

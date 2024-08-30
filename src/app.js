@@ -6,7 +6,7 @@ import carreraRoutes from "./routes/carrera.routes.js"
 import extunivRoutes from "./routes/extuniv.routes.js"
 import facRoutes from "./routes/fac.routes.js"
 import nombreAsigRoutes from "./routes/nombreAsig.routes.js"
-
+import tipoCursoRoutes from './routes/tipocurso.routes.js'
 import invcientRoutes from "./routes/invcient.routes.js"
 import posgradoRoutes from "./routes/posgrado.routes.js"
 import profesorRoutes from "./routes/profesor.routes.js"
@@ -29,6 +29,7 @@ app.use("/api",extunivRoutes)
 app.use("/api",facRoutes)
 app.use("/api",invcientRoutes)
 app.use("/api",nombreAsigRoutes)
+app.use("/api",tipoCursoRoutes)
 app.use("/api",posgradoRoutes)
 app.use("/api",profesorRoutes)
 

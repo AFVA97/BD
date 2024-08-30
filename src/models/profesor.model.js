@@ -38,7 +38,7 @@ const profesorSchema= new mongoose.Schema({
     trabajod:{
         type:Number
     },
-    tutoria:{
+    tutoriaaa:{
         type:Number
     },
     examene:{

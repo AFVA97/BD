@@ -4,7 +4,20 @@ import InvCient from "../models/invcient.model.js"
 export const getInvCients = async (req, res) => {
     try {
       const invCients = await InvCient.find();
-      res.json(invCients);
+      
+      
+      const {globalData}=req.cookies
+      if(globalData==0){
+        res.json(invCients)
+      console.log('entrados')
+        
+        return
+      }
+      else{
+        const filtrado=invCients.filter((investigacion)=>((new Date(investigacion.fecha).getFullYear()==globalData&&parseInt(String((new Date(investigacion.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(investigacion.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(investigacion.fecha)).getMonth() + 1))<=7)))
+        res.json(filtrado);
+        return
+      }
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }

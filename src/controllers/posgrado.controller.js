@@ -5,7 +5,17 @@ import Posgrado from "../models/posgrado.model.js"
 export const getPosgrados = async (req, res) => {
     try {
       const Posgrados = await Posgrado.find();
-      res.json(Posgrados);
+      const {globalData}=req.cookies
+      if(globalData==0){
+          res.json(Posgrados)
+        return
+      }
+      else{
+        const filtrado=Posgrados.filter((posgrado)=>((new Date(posgrado.fecha).getFullYear()==globalData&&parseInt(String((new Date(posgrado.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(posgrado.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(posgrado.fecha)).getMonth() + 1))<=7)))
+        res.json(filtrado);
+        return
+      }
+      //res.json(Posgrados);
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
