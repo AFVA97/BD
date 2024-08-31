@@ -10,6 +10,7 @@ import tipoCursoRoutes from './routes/tipocurso.routes.js'
 import invcientRoutes from "./routes/invcient.routes.js"
 import posgradoRoutes from "./routes/posgrado.routes.js"
 import profesorRoutes from "./routes/profesor.routes.js"
+import excelRoutes from "./routes/excel.routes.js"
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api",authRoutes);
+app.use("/api",excelRoutes)
 app.use("/api",asignaturaRoutes)
 app.use("/api",carreraRoutes)
 app.use("/api",extunivRoutes)
