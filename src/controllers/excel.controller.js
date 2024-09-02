@@ -131,6 +131,9 @@ export const getExcelAdmin=async (req, res) => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Datos');
 
+    const idFac=req.params._id
+    console.log(idFac);
+    
     // Agregar encabezados
     worksheet.columns = [
         { header: 'Nombre', key: 'nombre', width: 30 },

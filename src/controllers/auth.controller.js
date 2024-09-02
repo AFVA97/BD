@@ -50,7 +50,9 @@ export const login=async(req,res)=>{
         if(!isMatch){
             return res.status(400).json(["Incorrect Password"])
         }
-
+        if(!userFound.active){
+          return res.status(400).json(["El Usuario no está Activo"])
+        }
         const tokenusername=await createAccessToken({username:userFound.username})
         
         res.cookie("tokenusername",tokenusername)
@@ -62,6 +64,8 @@ export const login=async(req,res)=>{
         )
         
     } catch (error) {
+      //console.log(error);
+      
         res.status(500).json([error.message])
     }
 }
