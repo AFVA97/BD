@@ -10,7 +10,7 @@ const router = Router();
 
 router.get("/exceladmin", auth, getExcelAdmin);
 
-router.get("/excelfaculty", auth, getExcelFaculty);
+router.get("/excelfaculty/:_id", auth, getExcelFaculty);
 
 router.get("/excelprofesor", auth, getExcelProfesor);
 

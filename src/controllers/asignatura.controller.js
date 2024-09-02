@@ -5,12 +5,13 @@ export const getAsignaturas = async (req, res) => {
     try {
       const asignaturas = await Asignatura.find();
       const {globalData}=req.cookies
+      //console.log(globalData);
+      
       if(globalData==0){
         res.json(asignaturas)
         return
       }
-      else{
-        
+      else{       
         
         const filtrado=asignaturas.filter((asignatura)=>(new Date(asignatura.comienzo).getFullYear()==globalData))
         res.json(filtrado);
