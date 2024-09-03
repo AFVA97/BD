@@ -60,59 +60,60 @@ export const getExcelFaculty =async(req, res) => {
     ];
     const idFac=req.params._id
     
-    let asignaturas = await Asignatura.find({facultad:idFac});
+    const asigna = await Asignatura.find({facultad:idFac}).populate("profesor");
    
     const carreras=await Carrera.find({facultad:idFac});
+
+    let asignaturas=asigna
     if(globalData!=0){
-        asignaturas=asignaturas.filter((asignatura)=>(new Date(asignatura.comienzo).getFullYear()==globalData))
+        asignaturas=asigna.filter((asignatura)=>(new Date(asignatura.comienzo).getFullYear()==globalData))
     }
    
-      let carrerasInicio=[]
+      //let carrerasInicio=[]
+     //console.log(asignaturas);
      
-       if(carreras.length>0){
+    if(carreras.length>0){
         carreras.map((carrera)=>{
-         const worksheet=workbook.addWorksheet(carrera.nombre)
-         worksheet.columns = [
-            { header: 'Asignatura', key: 'asignatura', width: 30 },
-            { header: 'Tipo de Curso', key: 'tp', width: 10 },
-            { header: 'Cantidad de Grupos', key: 'cg', width: 10 },
-            { header: 'Año', key: 'anno', width: 10 },
-            { header: 'Examen Final', key: 'exafinal', width: 10 },
-            { header: 'Semestre', key: 'semestre', width: 10 },
-            { header: 'Horas', key: 'horas', width: 10 },
-            { header: 'Profesor', key: 'profesor', width: 10 },
-            { header: 'Notas', key: 'notas', width: 10 },
-            // Otros encabezados...
-        ];
-          let carreraN=carrera.nombre;
-          let ca=0
-          let cg=0
-          let cef=0
-          let horas=0
-          
-          let asignaturaFiltradaCarr=asignaturas.filter((asignatura)=>asignatura.carrera.equals(carrera._id))
-          asignaturaFiltradaCarr.map(async (asignatura)=>{
-            ca+=1;
-            cg+=parseInt(asignatura.cantgrupos)
-            if(asignatura.exafinal)
-              cef+=1
-            horas+=parseInt(asignatura.horas)
-            let profesor=null
-            if(asignatura.profesor)
-                profesor=await Profesor.findById(asignatura.profesor)
-            worksheet.addRow({asignatura:asignatura.nombre,
-                tp:asignatura.tipocurso,
-                cg:asignatura.cantgrupos,
-                anno:asignatura.anno,
-                exafinal:asignatura.exafinal?"Sí":"No",
-                semestre:asignatura.semestre?"1ro":"2do",
-                horas:asignatura.horas,
-                profesor:asignatura.profesor?`${profesor.nombre} ${profesor.apellidos}`:"",
-                notas:asignatura.notas})
-          })
-          //console.log('✅ aux    ', ca)
-          
-          worksheetGeneral.addRow({carrera:carreraN,ca:ca,cg:cg,cef:cef,horas:horas})
+            const worksheet=workbook.addWorksheet(carrera.nombre.slice(0,31))
+            worksheet.columns = [
+                { header: 'Asignatura', key: 'asignatura', width: 30 },
+                { header: 'Tipo de Curso', key: 'tp', width: 10 },
+                { header: 'Cantidad de Grupos', key: 'cg', width: 10 },
+                { header: 'Año', key: 'anno', width: 10 },
+                { header: 'Examen Final', key: 'exafinal', width: 10 },
+                { header: 'Semestre', key: 'semestre', width: 10 },
+                { header: 'Horas', key: 'horas', width: 10 },
+                { header: 'Profesor', key: 'profesor', width: 10 },
+                { header: 'Notas', key: 'notas', width: 10 },
+                // Otros encabezados...
+            ];
+            let carreraN=carrera.nombre;
+            let ca=0
+            let cg=0
+            let cef=0
+            let horas=0
+            
+            let asignaturaFiltradaCarr=asignaturas.filter((asignatura)=>asignatura.carrera.equals(carrera._id))
+            asignaturaFiltradaCarr.map( (asignatura)=>{
+                ca+=1;
+                cg+=parseInt(asignatura.cantgrupos)
+                if(asignatura.exafinal)
+                cef+=1
+                horas+=parseInt(asignatura.horas)
+                
+                worksheet.addRow({asignatura:asignatura.nombre,
+                    tp:asignatura.tipocurso,
+                    cg:asignatura.cantgrupos,
+                    anno:asignatura.anno,
+                    exafinal:asignatura.exafinal?"Sí":"No",
+                    semestre:asignatura.semestre?"1ro":"2do",
+                    horas:asignatura.horas,
+                    profesor:asignatura.profesor?`${asignatura.profesor.nombre} ${asignatura.profesor.apellidos}`:"",
+                    notas:asignatura.notas})
+            })
+            //console.log('✅ aux    ', ca)
+            
+            worksheetGeneral.addRow({carrera:carreraN,ca:ca,cg:cg,cef:cef,horas:horas})
         })
     }
     
