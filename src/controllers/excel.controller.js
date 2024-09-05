@@ -1,19 +1,14 @@
 import excelAdminModel from "../models/excel-admin.model.js"
-import excelFacultyModel from "../models/excel-faculty.model.js"
-import excelProfesorModel from "../models/excel-profesor.model.js"
 import  ExcelJS from 'exceljs';
-import { getAsignaturas } from "./asignatura.controller.js";
-import { getCarreras } from "./carrera.controller.js";
 import Asignatura from "../models/asignatura.model.js";
 import Carrera from "../models/carrera.model.js";
 import Extension from '../models/extuniv.model.js'
 import Posgrado from '../models/posgrado.model.js'
 import Investigacion from '../models/invcient.model.js'
-import Profesor from '../models/profesor.model.js'
-import mongoose from "mongoose";
 
 
 export const getExcelAdmin=async (req, res) => {
+    const {globalData}=req.cookies
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Datos');
 //////
@@ -22,19 +17,162 @@ export const getExcelAdmin=async (req, res) => {
 //////
 //////
     // Agregar encabezados
-    worksheet.columns = [
-        { header: 'Nombre', key: 'nombre', width: 30 },
-        { header: 'Edad', key: 'edad', width: 10 },
-        // Otros encabezados...
-    ];
-
-    // Obtener datos de la base de datos
-    const datos = await excelAdminModel.find().exec();
-
-    // Agregar filas
-    datos.forEach(dato => {
-        worksheet.addRow(dato);
+ // Estilos comunes
+const headerStyle = {
+    font: { bold: true, size: 16 },
+    alignment: { vertical: 'middle', horizontal: 'center' },
+    fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFE0B2' } },
+    border: {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' }
+    }
+    
+  };
+  const cellStyle = {
+    font: {  size: 12 },
+    alignment: { vertical: 'middle', horizontal: 'center' },
+    fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFE0B2' } },
+    border: {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' }
+    }
+  };
+  
+  // 
+  //#region Encabezados principales
+  worksheet.mergeCells('H1:W1');
+  worksheet.getCell('H1').value = 'DOCENCIA PREGRADO';
+  worksheet.getCell('H1').style = headerStyle;
+  
+  worksheet.mergeCells('X1:AK1');
+  worksheet.getCell('X1').value = 'DOCENCIA DE POSTGRADO E INVESTIGACIÓN';
+  worksheet.getCell('X1').style = headerStyle;
+  
+  worksheet.mergeCells('AL1:AO1');
+  worksheet.getCell('AL1').value = 'EXTENSION UNIVERSITARIA';
+  worksheet.getCell('AL1').style = headerStyle;
+  worksheet.mergeCells('AP1:AS1');
+  worksheet.getCell('AP1').value = 'TOTALES';
+  worksheet.getCell('AP1').style = headerStyle;
+  worksheet.getRow(1).height=`30`
+  
+  worksheet.mergeCells('A3:A4')
+  worksheet.getCell('A3').value='ID Universidad'
+  worksheet.mergeCells('B3:B4')
+  worksheet.getCell('B3').value='Área'
+  worksheet.mergeCells('C3:C4')
+  worksheet.getCell('C3').value='Departamento/Dirección'
+  worksheet.mergeCells('D3:D4')
+  worksheet.getCell('D3').value='Nombre(s)'
+  worksheet.mergeCells('E3:E4')
+  worksheet.getCell('E3').value='Apellidos'
+  worksheet.mergeCells('F3:F4')
+  worksheet.getCell('F3').value='Graduado de'
+  worksheet.mergeCells('G3:G4')
+  worksheet.getCell('G3').value='Funciones de direccion. (Cuadro, PPAA, Jefes de Disciplina, otras.)'
+  worksheet.mergeCells('H3:I3')
+  worksheet.getCell('H3').value='Carreras en las que imparte Docencia'
+  worksheet.getCell('H4').value='1er Semestre'
+  worksheet.getCell('I4').value='2do Semestre'
+  worksheet.mergeCells('J3:K3')
+  worksheet.getCell('J3').value='Años'
+  worksheet.getCell('J4').value='1er Semestre'
+  worksheet.getCell('K4').value='2do Semestre'
+  worksheet.mergeCells('L3:M3')
+  worksheet.getCell('L3').value='Asignaturas que Imparte'
+  worksheet.getCell('L4').value='1er Semestre'
+  worksheet.getCell('M4').value='2do Semestre'
+  worksheet.mergeCells('N3:O3')
+  worksheet.getCell('N3').value='Total de Horas en el Semestre'
+  worksheet.getCell('N4').value='1er Semestre'
+  worksheet.getCell('O4').value='2do Semestre'
+  worksheet.mergeCells('P3:Q3')
+  worksheet.getCell('P3').value='Frecuencia Semanal'
+  worksheet.getCell('P4').value='1er Semestre'
+  worksheet.getCell('Q4').value='2do Semestre'
+  worksheet.mergeCells('R3:T3')
+  worksheet.getCell('R3').value='Tutoría de Trabajo Científico Estudiantil'
+  worksheet.getCell('R4').value='Trabajo Extracurricular'
+  worksheet.getCell('S4').value='Trabajo de Curso'
+  worksheet.getCell('T4').value='Trabajo de Diploma'
+  worksheet.mergeCells('U3:U4')
+  worksheet.getCell('U3').value='Tutoria de Alumnos Ayudantes y/o de Adiestrados'
+  worksheet.mergeCells('V3:V4')
+  worksheet.getCell('V3').value='Horas para trabajo Metodológico'
+  worksheet.mergeCells('W3:W4')
+  worksheet.getCell('W3').value='Total de horas de pregrado'
+  worksheet.mergeCells('X3:X4')
+  worksheet.getCell('X3').value='Publicaciones cientificas según grupo (Del I al IV)'
+  worksheet.mergeCells('Y3:Y4')
+  worksheet.getCell('Y3').value='Presentación de trabajos en el fórum de ciencia y técnica'
+  worksheet.mergeCells('Z3:Z4')
+  worksheet.getCell('Z3').value='Presentación de propuestas de premios ACC e innovación'
+  worksheet.mergeCells('AA3:AA4')
+  worksheet.getCell('AA3').value='Presentación de propuestas de premios de las BTJ (solo para menores de 35 e incluye sello y exposición)'
+  worksheet.mergeCells('AB3:AB4')
+  worksheet.getCell('AB3').value='Presentación de premios internacionales'
+  worksheet.mergeCells('AC3:AC4')
+  worksheet.getCell('AC3').value='Presentación de trabajos a premios nacionales '
+  worksheet.mergeCells('AD3:AD4')
+  worksheet.getCell('AD3').value='Presentación de trabajos en eventos científicos'
+  worksheet.mergeCells('AE3:AJ3')
+  worksheet.getCell('AE3').value='Modalidad de Posgrado'
+  worksheet.getCell('AE4').value='Curso'
+  worksheet.getCell('AF4').value='Diplomado'
+  worksheet.getCell('AG4').value='Especialidad'
+  worksheet.getCell('AH4').value='Entrenamientos'
+  worksheet.getCell('AI4').value='Maestrias'
+  worksheet.getCell('AJ4').value='Doctorados'
+  worksheet.mergeCells('AK3:AK4')
+  worksheet.getCell('AK3').value='Total de horas de postgrado'
+  worksheet.mergeCells('AL3:AL4')
+  worksheet.getCell('AL3').value='Tiempo dedicado a la atención a la Residencia Estudiantil'
+  worksheet.mergeCells('AM3:AM4')
+  worksheet.getCell('AM3').value='Tiempo dedicado al trabajo con las catedras Honorificas'  
+  worksheet.mergeCells('AN3:AN4')
+  worksheet.getCell('AN3').value='Tiempo dedicado a actividades extensionistas'
+  worksheet.mergeCells('AO3:AO4')
+  worksheet.getCell('AO3').value='Total de horas de Extensión Universitaria'
+  worksheet.mergeCells('AP3:AP4')
+  worksheet.getCell('AP3').value='Total de horas semanales'
+  worksheet.mergeCells('AQ3:AQ4')
+  worksheet.getCell('AQ3').value='Total de horas Primer semestre'
+  worksheet.mergeCells('AR3:AR4')
+  worksheet.getCell('AR3').value='Total de horas segundo semestre'
+  worksheet.mergeCells('AS3:AS4')
+  worksheet.getCell('AS3').value='Total de horas General en el año'
+  
+  for (let row = 3; row <= 4; row++) {
+    for (let col = 1; col <= 45; col++) { // BR es la columna 70
+      const cell = worksheet.getCell(row, col);
+      cell.style = cellStyle;
+    }
+  }
+  worksheet.columns.forEach(column => {
+    let maxLength = 0;
+    column.eachCell({ includeEmpty: true }, cell => {
+      const cellValue = cell.value ? cell.value.toString() : '';
+      maxLength = Math.max(maxLength, cellValue.length);
     });
+    column.width = maxLength; // Añadir un poco de espacio extra
+  });
+  //#endregion
+
+  const asigna = await Asignatura.find().populate("profesor");
+   
+    const carreras=await Carrera.find();
+
+    let asignaturas=asigna
+    if(globalData!=0){
+        asignaturas=asigna.filter((asignatura)=>(new Date(asignatura.comienzo).getFullYear()==globalData))
+    }
+  
+
+  //worksheet.addRow()
     
     // Enviar el archivo Excel
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -49,14 +187,13 @@ export const getExcelFaculty =async(req, res) => {
     const worksheetGeneral = workbook.addWorksheet('General');
     const {globalData}=req.cookies
 
-    // Agregar encabezados
+   
     worksheetGeneral.columns = [
         { header: 'Carrera', key: 'carrera', width: 30 },
         { header: 'Cantidad de Asignturas', key: 'ca', width: 10 },
         { header: 'Cantidad de Grupos', key: 'cg', width: 10 },
         { header: 'Cantidad de Examense Finales', key: 'cef', width: 10 },
         { header: 'Total de Horas', key: 'horas', width: 10 },
-        // Otros encabezados...
     ];
     const idFac=req.params._id
     
@@ -68,9 +205,6 @@ export const getExcelFaculty =async(req, res) => {
     if(globalData!=0){
         asignaturas=asigna.filter((asignatura)=>(new Date(asignatura.comienzo).getFullYear()==globalData))
     }
-   
-      //let carrerasInicio=[]
-     //console.log(asignaturas);
      
     if(carreras.length>0){
         carreras.map((carrera)=>{
@@ -85,7 +219,6 @@ export const getExcelFaculty =async(req, res) => {
                 { header: 'Horas', key: 'horas', width: 10 },
                 { header: 'Profesor', key: 'profesor', width: 10 },
                 { header: 'Notas', key: 'notas', width: 10 },
-                // Otros encabezados...
             ];
             let carreraN=carrera.nombre;
             let ca=0
@@ -111,21 +244,12 @@ export const getExcelFaculty =async(req, res) => {
                     profesor:asignatura.profesor?`${asignatura.profesor.nombre} ${asignatura.profesor.apellidos}`:"",
                     notas:asignatura.notas})
             })
-            //console.log('✅ aux    ', ca)
-            
             worksheetGeneral.addRow({carrera:carreraN,ca:ca,cg:cg,cef:cef,horas:horas})
         })
     }
     
     
-    // Obtener datos de la base de datos
-    //const datos = await excelFacultyModel.find().exec();
-//console.log(carrerasInicio);
-
-    // Agregar filas
-    
-
-    // Enviar el archivo Excel
+   
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.setHeader('Content-Disposition', 'attachment; filename=datos.xlsx');
 
@@ -143,7 +267,6 @@ export const getExcelFaculty =async(req, res) => {
     const {globalData}=req.cookies
 
     const idProf=req.params._id
-   // console.log(idFac);
     const asigna =await Asignatura.find({profesor:idProf}).populate(["carrera","facultad"])
     const posgrad = await Posgrado.find({profesor:idProf})
     const extension=await Extension.find({profesor:idProf})
@@ -158,10 +281,7 @@ export const getExcelFaculty =async(req, res) => {
         investigaciones=investiga.filter((investigacion)=>((new Date(investigacion.fecha).getFullYear()==globalData&&parseInt(String((new Date(investigacion.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(investigacion.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(investigacion.fecha)).getMonth() + 1))<=7)))
         extensiones=extension.filter((extension)=>((new Date(extension.fecha).getFullYear()==globalData&&parseInt(String((new Date(extension.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(extension.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(extension.fecha)).getMonth() + 1))<=7)))
     }
-    //console.log(asignaturas);
-    
-    // Agregar encabezados
-    
+   
     worksheetPregrado.columns = [
         { header: 'Asignatura', key: 'asignatura', width: 30 },
         { header: 'Carrera', key: 'carrera', width: 10 },
@@ -175,7 +295,7 @@ export const getExcelFaculty =async(req, res) => {
         { header: 'Tutoria A. A.', key: 'tutoriaaa', width: 10 },
         { header: 'Notas', key: 'notas', width: 30 },
     ];
-    //if(Array.isArray(asignaturas)){
+    
         asignaturas.map((asign)=>{
             worksheetPregrado.addRow({asignatura:asign.nombre,
                 carrera:asign.carrera.nombre,
@@ -190,7 +310,7 @@ export const getExcelFaculty =async(req, res) => {
                 notas:asign.notas
             })
         })
-   // }
+ 
 
     worksheetPosgrado.columns = [
         { header: 'Nombre', key: 'nombre', width: 30 },
@@ -201,7 +321,7 @@ export const getExcelFaculty =async(req, res) => {
         { header: 'Fecha', key: 'fecha', width: 10 },
         { header: 'Ubicación', key: 'ubicacion', width: 10 },
     ];
-    //if(Array.isArray(posgrados)){
+   
         posgrados.map((posgr)=>{
             const fechaActual = new Date(posgr.fecha);
             const dia = String(fechaActual.getDate()).padStart(2, '0');
@@ -216,7 +336,7 @@ export const getExcelFaculty =async(req, res) => {
                 ubicacion:posgr.ubicacion
             })
         })
-   // }
+   
 
     worksheetInvestigacion.columns = [
         { header: 'Titulo', key: 'titulo', width: 30 },
@@ -237,7 +357,7 @@ export const getExcelFaculty =async(req, res) => {
         { header: 'Autores', key: 'autores', width: 10 },
         { header: 'Link', key: 'link', width: 10 },
     ];
-  //  if(Array.isArray(investigaciones)){
+ 
         investigaciones.map((invest)=>{
             const fechaActual = new Date(invest.fecha);
             const dia = String(fechaActual.getDate()).padStart(2, '0');
@@ -449,7 +569,7 @@ export const getExcelFaculty =async(req, res) => {
               }
               
         })
-   // }
+   
 
     worksheetExtension.columns = [
         { header: 'Titulo', key: 'titulo', width: 30 },
@@ -457,7 +577,7 @@ export const getExcelFaculty =async(req, res) => {
         { header: 'Horas', key: 'horas', width: 10 },
         { header: 'Fecha', key: 'fecha', width: 10 },
     ];
-   // if(Array.isArray(extensiones)){
+  
         extensiones.map((exten)=>{
             const fechaActual = new Date(exten.fecha);
             const dia = String(fechaActual.getDate()).padStart(2, '0');
@@ -469,10 +589,10 @@ export const getExcelFaculty =async(req, res) => {
                 fecha:`${dia}/${mes}/${año}`
             })
         })
-   // }
+   
    
 
-    // Enviar el archivo Excel
+   
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.setHeader('Content-Disposition', 'attachment; filename=datos.xlsx');
 

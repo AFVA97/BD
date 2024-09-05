@@ -5,14 +5,11 @@ export const getAsignaturas = async (req, res) => {
     try {
       const asignaturas = await Asignatura.find();
       const {globalData}=req.cookies
-      //console.log(globalData);
-      
       if(globalData==0){
         res.json(asignaturas)
         return
       }
-      else{       
-        
+      else{  
         const filtrado=asignaturas.filter((asignatura)=>(new Date(asignatura.comienzo).getFullYear()==globalData))
         res.json(filtrado);
         return
@@ -41,7 +38,6 @@ export const createAsignatura=async(req,res)=>{
             exafinal,
             notas}=req.body;
             console.log(req.body);
-            
             const newAsignatura=new Asignatura({nombre,
                 carrera,
                 facultad,
@@ -70,7 +66,6 @@ export const deleteAsignatura = async (req, res) => {
     const deletedAsignatura = await Asignatura.findByIdAndDelete(req.params.id);
     if (!deletedAsignatura)
       return res.status(404).json(["Asignatura not found" ]);
-
     return res.sendStatus(204);
   } catch (error) {
     return res.status(500).json([error.message ]);
@@ -116,7 +111,6 @@ export const updateAsignatura = async (req, res) => {
     return res.json(AsignaturaUpdated);
   } catch (error) {
     console.log(error);
-    
     return res.status(500).json([error.message ]);
   }
 };
