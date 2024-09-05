@@ -1,9 +1,9 @@
-import excelAdminModel from "../models/excel-admin.model.js"
 import  ExcelJS from 'exceljs';
 import Asignatura from "../models/asignatura.model.js";
 import Carrera from "../models/carrera.model.js";
 import Extension from '../models/extuniv.model.js'
 import Posgrado from '../models/posgrado.model.js'
+import Profesor from '../models/profesor.model.js'
 import Investigacion from '../models/invcient.model.js'
 
 
@@ -55,10 +55,10 @@ const headerStyle = {
   worksheet.mergeCells('AL1:AO1');
   worksheet.getCell('AL1').value = 'EXTENSION UNIVERSITARIA';
   worksheet.getCell('AL1').style = headerStyle;
-  worksheet.mergeCells('AP1:AS1');
-  worksheet.getCell('AP1').value = 'TOTALES';
-  worksheet.getCell('AP1').style = headerStyle;
-  worksheet.getRow(1).height=`30`
+//   worksheet.mergeCells('AP1:AS1');
+//   worksheet.getCell('AP1').value = 'TOTALES';
+//   worksheet.getCell('AP1').style = headerStyle;
+//   worksheet.getRow(1).height=`30`
   
   worksheet.mergeCells('A3:A4')
   worksheet.getCell('A3').value='ID Universidad'
@@ -137,13 +137,8 @@ const headerStyle = {
   worksheet.getCell('AN3').value='Tiempo dedicado a actividades extensionistas'
   worksheet.mergeCells('AO3:AO4')
   worksheet.getCell('AO3').value='Total de horas de Extensión Universitaria'
+ 
   worksheet.mergeCells('AP3:AP4')
-  worksheet.getCell('AP3').value='Total de horas semanales'
-  worksheet.mergeCells('AQ3:AQ4')
-  worksheet.getCell('AQ3').value='Total de horas Primer semestre'
-  worksheet.mergeCells('AR3:AR4')
-  worksheet.getCell('AR3').value='Total de horas segundo semestre'
-  worksheet.mergeCells('AS3:AS4')
   worksheet.getCell('AS3').value='Total de horas General en el año'
   
   for (let row = 3; row <= 4; row++) {
@@ -162,17 +157,181 @@ const headerStyle = {
   });
   //#endregion
 
-  const asigna = await Asignatura.find().populate("profesor");
-   
-    const carreras=await Carrera.find();
 
-    let asignaturas=asigna
-    if(globalData!=0){
-        asignaturas=asigna.filter((asignatura)=>(new Date(asignatura.comienzo).getFullYear()==globalData))
-    }
+  const asigna = await Asignatura.find().populate(["facultad","carrera"]);   
+  const posgrad = await Posgrado.find()
+  const extension=await Extension.find()
+  const investiga=await Investigacion.find()
+  let asignaturas=asigna
+  let posgrados=posgrad
+  let extensiones=extension
+  let investigaciones=investiga
+  if(globalData!=0){
+      asignaturas=asigna.filter((asignatura)=>(new Date(asignatura.comienzo).getFullYear()==globalData))
+      posgrados=posgrad.filter((posgrado)=>((new Date(posgrado.fecha).getFullYear()==globalData&&parseInt(String((new Date(posgrado.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(posgrado.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(posgrado.fecha)).getMonth() + 1))<=7)))
+      investigaciones=investiga.filter((investigacion)=>((new Date(investigacion.fecha).getFullYear()==globalData&&parseInt(String((new Date(investigacion.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(investigacion.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(investigacion.fecha)).getMonth() + 1))<=7)))
+      extensiones=extension.filter((extension)=>((new Date(extension.fecha).getFullYear()==globalData&&parseInt(String((new Date(extension.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(extension.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(extension.fecha)).getMonth() + 1))<=7)))
+  }
+    const profesores=await Profesor.find();
+    
+    
+    
+    
+  profesores.map((profesor)=>{
+    let asignatura=asignaturas.filter((asign)=>profesor._id.equals(asign.profesor))
+    let posgrado=posgrados.filter((asign)=>profesor._id.equals(asign.profesor))
+    let extensi=investigaciones.filter((asign)=>profesor._id.equals(asign.profesor))
+    let investigacion=asignaturas.filter((asign)=>profesor._id.equals(asign.profesor))
+    
+    
+    const row=[]
+    
+    row.push(profesor.idUniversidad)
+    row.push("Rectoría")
+    row.push("Marxismo- Leninismo")
+    row.push(profesor.nombre)
+    row.push(profesor.apellidos)
+    row.push(profesor.graduado)
+    row.push(profesor.funcionDireccion)
+    let carr1=""
+    let carr2=""
+    let annos1=""
+    let annos2=""
+    let asignatura1=""
+    let asignatura2=""
+    let horas1=0
+    let horas2=0
+    let frecuencia1=0
+    let frecuencia2=0
+    asignatura.map((asign)=>{
+        if(asign.semestre){
+            carr1+=`${carr1}, ${asign.carrera.nombre}`
+            annos1+=`${annos1}, ${asign.anno}`
+            asignatura1+=`${asignatura1}, ${asign.nombre}`
+            horas1+=parseInt(asign.horas)
+            frecuencia1+=parseInt(asign.frecuencia)
+        }
+        else{
+            carr2+=`${asign.carrera.nombre}, `
+            annos2+=`${asign.anno}, `
+            asignatura2+=`${asign.nombre}, `
+            horas2+=parseInt(asign.horas)
+            frecuencia2+=parseInt(asign.frecuencia)
+        }
+    })
+    row.push(carr1)
+    row.push(carr2)
+    row.push(annos1)
+    row.push(annos2)
+    row.push(asignatura1)
+    row.push(asignatura2)
+    row.push(frecuencia1)
+    row.push(frecuencia2)
+    row.push(profesor.trabajoec)
+    row.push(profesor.trabajoc)
+    row.push(profesor.trabajod)
+    row.push(profesor.tutoriaaa)
+    row.push(profesor.trabajometo)
+    row.push(parseInt(horas1)+parseInt(horas2)+parseInt(profesor.trabajoec)+parseInt(profesor.trabajoc)+parseInt(profesor.trabajod)+parseInt(profesor.trabajometo))
+
+    let publicaciones=0
+    let forum=0
+    let acc=0
+    let btj=0
+    let premios=0
+    let otros=0
+    investigacion.map((invest)=>{{
+        switch (invest.tipo) {
+            case "Publicación Artículo":
+                publicaciones+=1
+                break;
+            case "Fórum":
+                forum+=1
+                break;
+            case "Premio ACC":
+                acc+=1
+                break;
+            case "Premio BTJ":
+                btj+=1
+                break;
+            case "Otro Premio":
+                premios+=1
+                break;
+            default:
+                otros+=1
+                break;
+        }
+    }})
+    row.push(publicaciones)
+    row.push(forum)
+    row.push(acc)
+    row.push(btj)
+    row.push(premios)
+    row.push(otros)
+
+    let curso=0
+    let diplomado=0
+    let especialidad=0
+    let entrena=0
+    let maestria=0
+    let doctorado=0
+    posgrado.map((posg)=>{
+        switch (posg.tipo) {
+            case "Curso":
+                curso+=posg.horas
+                break;
+            case "Diplomado":
+                diplomado+=posg.horas
+                break;
+            case "Especialidad":
+                especialidad+=posg.horas
+                break;
+            case "Entrenamiento":
+                entrena+=posg.horas
+                break;
+            case "Maestría":
+                maestria+=posg.horas
+                break;
+            default:
+                doctorado+=posg.horas
+                break;
+        }
+    })
+    row.push(curso)
+    row.push(diplomado)
+    row.push(especialidad)
+    row.push(entrena)
+    row.push(maestria)
+    row.push(doctorado)
+    row.push(parseInt(curso)+parseInt(diplomado)+parseInt(especialidad)+parseInt(entrena)+parseInt(maestria)+parseInt(doctorado))
+    
+    let catedra=0
+    let actividades=0
+    let Residencia=0
+    
+    extensi.map((extss)=>{
+        switch (extss.tipo) {
+            case "Atención a la Residencia":
+                Residencia+=parseInt(extss.horas)
+                break;
+            case "Trabajo Cátedras Honoríficas":
+                catedra+=parseInt(extss.horas)
+                break;
+            default:
+                actividades+=parseInt(extss.horas)
+                break;
+        }
+    })
+    row.push(Residencia)
+    row.push(catedra)
+    row.push(actividades)    
+    row.push(parseInt(Residencia)+parseInt(catedra)+parseInt(actividades))  
+
+    row.push(parseInt(Residencia)+parseInt(catedra)+parseInt(actividades)+parseInt(curso)+parseInt(diplomado)+parseInt(especialidad)+parseInt(entrena)+parseInt(maestria)+parseInt(doctorado)+parseInt(horas1)+parseInt(horas2)+parseInt(profesor.trabajoec)+parseInt(profesor.trabajoc)+parseInt(profesor.trabajod)+parseInt(profesor.trabajometo))
+    worksheet.addRow(row)
+  })
+
   
-
-  //worksheet.addRow()
     
     // Enviar el archivo Excel
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
