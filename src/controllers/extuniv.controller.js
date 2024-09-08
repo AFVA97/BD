@@ -5,13 +5,13 @@ export const getExtUnivs = async (req, res) => {
     try {
       const ExtUnivs = await ExtUniv.find();
 
-      const {globalData}=req.cookies
+      const {globalData,globalData1}=req.cookies
       if(globalData==0){
         res.json(ExtUnivs)
         return
       }
       else{
-        const filtrado=ExtUnivs.filter((extension)=>((new Date(extension.fecha).getFullYear()==globalData&&parseInt(String((new Date(extension.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(extension.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(extension.fecha)).getMonth() + 1))<=7)))
+        const filtrado=ExtUnivs.filter((extension)=>(extension.fecha>=(new Date(globalData)) && extension.fecha<=(new Date(globalData1))))
         res.json(filtrado);
         return
       }

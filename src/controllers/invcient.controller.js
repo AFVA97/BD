@@ -6,14 +6,14 @@ export const getInvCients = async (req, res) => {
       const invCients = await InvCient.find();
       
       
-      const {globalData}=req.cookies
+      const {globalData,globalData1}=req.cookies
       if(globalData==0){
         res.json(invCients)
         console.log('entrados')
         return
       }
       else{
-        const filtrado=invCients.filter((investigacion)=>((new Date(investigacion.fecha).getFullYear()==globalData&&parseInt(String((new Date(investigacion.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(investigacion.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(investigacion.fecha)).getMonth() + 1))<=7)))
+        const filtrado=invCients.filter((investigacion)=>(investigacion.fecha>=(new Date(globalData)) && investigacion.fecha<=(new Date(globalData1))))
         res.json(filtrado);
         return
       }

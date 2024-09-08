@@ -2,6 +2,7 @@ import express from "express"
 import morgan from "morgan"
 import authRoutes from "./routes/auth.routes.js"
 import asignaturaRoutes from "./routes/asignatura.routes.js"
+import cursoRoutes from "./routes/curso.routes.js"
 import carreraRoutes from "./routes/carrera.routes.js"
 import extunivRoutes from "./routes/extuniv.routes.js"
 import facRoutes from "./routes/fac.routes.js"
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use("/api",authRoutes);
 app.use("/api",excelRoutes)
 app.use("/api",asignaturaRoutes)
+app.use("/api",cursoRoutes)
 app.use("/api",carreraRoutes)
 app.use("/api",extunivRoutes)
 app.use("/api",facRoutes)

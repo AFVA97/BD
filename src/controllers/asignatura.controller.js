@@ -4,13 +4,19 @@ import Asignatura from "../models/asignatura.model.js"
 export const getAsignaturas = async (req, res) => {
     try {
       const asignaturas = await Asignatura.find();
-      const {globalData}=req.cookies
+      const {globalData,globalData1}=req.cookies
+      
+      
       if(globalData==0){
         res.json(asignaturas)
         return
       }
+      
+      
       else{  
-        const filtrado=asignaturas.filter((asignatura)=>(new Date(asignatura.comienzo).getFullYear()==globalData))
+        const filtrado=asignaturas.filter((asignatura)=>(asignatura.comienzo>=(new Date(globalData)) && asignatura.finaliza<=(new Date(globalData1))))
+        //console.log(filtrado);
+        
         res.json(filtrado);
         return
       }

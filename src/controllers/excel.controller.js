@@ -205,8 +205,8 @@ const headerStyle = {
     let frecuencia2=0
     asignatura.map((asign)=>{
         if(asign.semestre){
-            carr1+=`${carr1}, ${asign.carrera.nombre}`
-            annos1+=`${annos1}, ${asign.anno}`
+            carr1+=`${asign.carrera.nombre}, `
+            annos1+=`${asign.anno}, `
             asignatura1+=`${asignatura1}, ${asign.nombre}`
             horas1+=parseInt(asign.horas)
             frecuencia1+=parseInt(asign.frecuencia)
