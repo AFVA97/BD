@@ -35,6 +35,9 @@ const asignaturaSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
+    plan:{
+        type:String,
+    },
     cantgrupos:{
         type:Number,
         required:true,

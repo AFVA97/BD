@@ -15,7 +15,6 @@ export const getAsignaturas = async (req, res) => {
       
       else{  
         const filtrado=asignaturas.filter((asignatura)=>(asignatura.comienzo>=(new Date(globalData)) && asignatura.finaliza<=(new Date(globalData1))))
-        //console.log(filtrado);
         
         res.json(filtrado);
         return
@@ -38,6 +37,7 @@ export const createAsignatura=async(req,res)=>{
             comienzo,
             finaliza,
             horas,
+            plan,
             tutoriaaa,
             profesor,
             frecuencia,
@@ -51,6 +51,7 @@ export const createAsignatura=async(req,res)=>{
                 semestre,
                 comienzo,
                 finaliza,
+                plan,
                 tipocurso,
                 frecuencia,
                 tutoriaaa,
@@ -90,6 +91,7 @@ export const updateAsignatura = async (req, res) => {
       tipocurso,
       cantgrupos,
       frecuencia,
+      plan,
       tutoriaaa,
       horas,
       profesor,
@@ -101,6 +103,7 @@ export const updateAsignatura = async (req, res) => {
         carrera,
         facultad,
         exafinal,
+        plan,
         anno,
         semestre,
         comienzo,

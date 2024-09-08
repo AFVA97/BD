@@ -12,6 +12,7 @@ import invcientRoutes from "./routes/invcient.routes.js"
 import posgradoRoutes from "./routes/posgrado.routes.js"
 import profesorRoutes from "./routes/profesor.routes.js"
 import excelRoutes from "./routes/excel.routes.js"
+import planRoutes from './routes/plan.routes.js' 
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -36,5 +37,6 @@ app.use("/api",nombreAsigRoutes)
 app.use("/api",tipoCursoRoutes)
 app.use("/api",posgradoRoutes)
 app.use("/api",profesorRoutes)
+app.use("/api",planRoutes)
 
 export default app
