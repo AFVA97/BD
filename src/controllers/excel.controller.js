@@ -8,7 +8,7 @@ import Investigacion from '../models/invcient.model.js'
 
 
 export const getExcelAdmin=async (req, res) => {
-    const {globalData}=req.cookies
+    const {globalData,globalData1}=req.cookies
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Datos');
 //////
@@ -139,7 +139,7 @@ const headerStyle = {
   worksheet.getCell('AO3').value='Total de horas de Extensión Universitaria'
  
   worksheet.mergeCells('AP3:AP4')
-  worksheet.getCell('AS3').value='Total de horas General en el año'
+  worksheet.getCell('AP3').value='Total de horas General en el año'
   
   for (let row = 3; row <= 4; row++) {
     for (let col = 1; col <= 45; col++) { // BR es la columna 70
@@ -167,10 +167,10 @@ const headerStyle = {
   let extensiones=extension
   let investigaciones=investiga
   if(globalData!=0){
-      asignaturas=asigna.filter((asignatura)=>(new Date(asignatura.comienzo).getFullYear()==globalData))
-      posgrados=posgrad.filter((posgrado)=>((new Date(posgrado.fecha).getFullYear()==globalData&&parseInt(String((new Date(posgrado.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(posgrado.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(posgrado.fecha)).getMonth() + 1))<=7)))
-      investigaciones=investiga.filter((investigacion)=>((new Date(investigacion.fecha).getFullYear()==globalData&&parseInt(String((new Date(investigacion.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(investigacion.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(investigacion.fecha)).getMonth() + 1))<=7)))
-      extensiones=extension.filter((extension)=>((new Date(extension.fecha).getFullYear()==globalData&&parseInt(String((new Date(extension.fecha)).getMonth() + 1).padStart(2, '0'))>7)||(new Date(extension.fecha).getFullYear()==(parseInt(globalData)+1)&&parseInt(String((new Date(extension.fecha)).getMonth() + 1))<=7)))
+      asignaturas=asigna.filter((asignatura)=>(asignatura.comienzo>=(new Date(globalData)) && asignatura.finaliza<=(new Date(globalData1))))
+      posgrados=posgrad.filter((posgrado)=>(posgrado.fecha>=(new Date(globalData)) && posgrado.fecha<=(new Date(globalData1))))
+      investigaciones=investiga.filter((investigacion)=>(investigacion.fecha>=(new Date(globalData)) && investigacion.fecha<=(new Date(globalData1))))
+      extensiones=extension.filter((extension)=>(extension.fecha>=(new Date(globalData)) && extension.fecha<=(new Date(globalData1))))
   }
     const profesores=await Profesor.find();
     
@@ -179,9 +179,9 @@ const headerStyle = {
     
   profesores.map((profesor)=>{
     let asignatura=asignaturas.filter((asign)=>profesor._id.equals(asign.profesor))
-    let posgrado=posgrados.filter((asign)=>profesor._id.equals(asign.profesor))
-    let extensi=investigaciones.filter((asign)=>profesor._id.equals(asign.profesor))
-    let investigacion=asignaturas.filter((asign)=>profesor._id.equals(asign.profesor))
+    let posgrado=posgrados.filter((posgr)=>profesor._id.equals(posgr.profesor))
+    let extensi=extensiones.filter((exten)=>profesor._id.equals(exten.profesor))
+    let investigacion=investigaciones.filter((invest)=>profesor._id.equals(invest.profesor))
     
     
     const row=[]
@@ -203,34 +203,44 @@ const headerStyle = {
     let horas2=0
     let frecuencia1=0
     let frecuencia2=0
+    let tutoriaaa=0
     asignatura.map((asign)=>{
         if(asign.semestre){
+            //console.log('1ro');
+            
             carr1+=`${asign.carrera.nombre}, `
             annos1+=`${asign.anno}, `
-            asignatura1+=`${asignatura1}, ${asign.nombre}`
+            asignatura1+=`${asign.nombre}, `
             horas1+=parseInt(asign.horas)
             frecuencia1+=parseInt(asign.frecuencia)
         }
         else{
+            //console.log('2do');
+            
             carr2+=`${asign.carrera.nombre}, `
             annos2+=`${asign.anno}, `
             asignatura2+=`${asign.nombre}, `
             horas2+=parseInt(asign.horas)
             frecuencia2+=parseInt(asign.frecuencia)
         }
+        tutoriaaa+=asign.tutoriaaa
     })
+    //console.log(frecuencia2);
+    
     row.push(carr1)
     row.push(carr2)
     row.push(annos1)
     row.push(annos2)
     row.push(asignatura1)
     row.push(asignatura2)
+    row.push(horas1)
+    row.push(horas2)
     row.push(frecuencia1)
     row.push(frecuencia2)
     row.push(profesor.trabajoec)
     row.push(profesor.trabajoc)
     row.push(profesor.trabajod)
-    row.push(profesor.tutoriaaa)
+    row.push(tutoriaaa)
     row.push(profesor.trabajometo)
     row.push(parseInt(horas1)+parseInt(horas2)+parseInt(profesor.trabajoec)+parseInt(profesor.trabajoc)+parseInt(profesor.trabajod)+parseInt(profesor.trabajometo))
 
@@ -238,9 +248,11 @@ const headerStyle = {
     let forum=0
     let acc=0
     let btj=0
+    let premiosi=0
     let premios=0
     let otros=0
     investigacion.map((invest)=>{{
+        
         switch (invest.tipo) {
             case "Publicación Artículo":
                 publicaciones+=1
@@ -249,15 +261,21 @@ const headerStyle = {
                 forum+=1
                 break;
             case "Premio ACC":
+                
                 acc+=1
                 break;
             case "Premio BTJ":
                 btj+=1
                 break;
             case "Otro Premio":
-                premios+=1
+                if(investigacion.alcance=='Internacional')
+                    premiosi+=1
+                else
+                    premios+=1
                 break;
             default:
+                //console.log('entro otros');
+                
                 otros+=1
                 break;
         }
@@ -266,6 +284,7 @@ const headerStyle = {
     row.push(forum)
     row.push(acc)
     row.push(btj)
+    row.push(premiosi)
     row.push(premios)
     row.push(otros)
 
@@ -276,7 +295,8 @@ const headerStyle = {
     let maestria=0
     let doctorado=0
     posgrado.map((posg)=>{
-        switch (posg.tipo) {
+        
+        switch (posg.modalidad) {
             case "Curso":
                 curso+=posg.horas
                 break;
@@ -327,7 +347,9 @@ const headerStyle = {
     row.push(actividades)    
     row.push(parseInt(Residencia)+parseInt(catedra)+parseInt(actividades))  
 
-    row.push(parseInt(Residencia)+parseInt(catedra)+parseInt(actividades)+parseInt(curso)+parseInt(diplomado)+parseInt(especialidad)+parseInt(entrena)+parseInt(maestria)+parseInt(doctorado)+parseInt(horas1)+parseInt(horas2)+parseInt(profesor.trabajoec)+parseInt(profesor.trabajoc)+parseInt(profesor.trabajod)+parseInt(profesor.trabajometo))
+    row.push(parseInt(Residencia)+parseInt(catedra)+parseInt(actividades)+parseInt(curso)+parseInt(diplomado)+parseInt(especialidad)+parseInt(entrena)+parseInt(maestria)+parseInt(doctorado)+parseInt(horas1)+parseInt(horas2)+parseInt(profesor.trabajoec)+parseInt(profesor.trabajoc)+parseInt(profesor.trabajod)+parseInt(profesor.trabajometo));
+    
+    //row.push(totales)
     worksheet.addRow(row)
   })
 

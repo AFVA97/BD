@@ -38,10 +38,10 @@ export const login=async(req,res)=>{
     try {
         const userFound=await User.findOne({username})
         if(!userFound)
-            return res.status(400).json(["User Not Found"]);
+            return res.status(400).json(["Usuario no Encontrado"]);
         const isMatch=await bcryptjs.compare(password,userFound.password);
         if(!isMatch){
-            return res.status(400).json(["Incorrect Password"])
+            return res.status(400).json(["Contraseña Incorrecta"])
         }
         if(!userFound.active){
           return res.status(400).json(["El Usuario no está Activo"])
@@ -52,11 +52,16 @@ export const login=async(req,res)=>{
             userFound
         )
     } catch (error) {
+      console.log(error);
+      
         res.status(500).json([error.message])
     }
 }
 
 export const logout=(req,res)=>{
+    
+    res.cookie("tokenusername","",{expires: new Date(0)})
+    res.cookie("globalData","",{expires: new Date(0)})
     res.cookie("tokenusername","",{expires: new Date(0)})
     return res.sendStatus(200)
 }

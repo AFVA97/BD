@@ -9,7 +9,7 @@ export const getInvCients = async (req, res) => {
       const {globalData,globalData1}=req.cookies
       if(globalData==0){
         res.json(invCients)
-        console.log('entrados')
+        //console.log('entrados')
         return
       }
       else{
